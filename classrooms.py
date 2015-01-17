@@ -2,20 +2,28 @@ from penn.registrar import Registrar
 from credentials import REG_USERNAME, REG_PASSWORD
 
 r = Registrar(REG_USERNAME, REG_PASSWORD)
+
 day_param = 'starts_on_day'
 start_param = 'starts_at_or_after_hour'
 end_param = 'ends_at_or_after_hour'
 
 days_of_the_week = "MTWRFSU"
+list_of_classrooms =  \
+    [['DRLB', 'A7'],
+     ['DRLB', '4C2'],
+     ['DRLB', '3C8'],
+     ['DRLB', '4C8'],
+     ['DRLB', '4C6']]
 
 def get_used_rooms(start_time, end_time, day):
     sections_generators = [get_sections_starting_on_day(start_time, end_time, d)
             for d in days_to_search(day)]
-    """sections = sections_generators[0]
+    """
+    sections = sections_generators[0]
     return [[i['meetings'][0]['building_code'], 
              i['meetings'][0]['room_number']]
             for i in sections ]
-"""
+    """
     list_of_room_lists = [[[i['meetings'][0]['building_code'],
                             i['meetings'][0]['room_number']]
                            for i in generator if day in
@@ -33,6 +41,10 @@ def get_sections_starting_on_day(start_time, end_time, day):
     return sections
 
 def days_to_search(day):
+    """
+    This function is a correction to the problem of Penn Registrar API
+    checking whether the meeting day string starts with the day of interest.
+    """
     index = days_of_the_week.index(day)
     days = []
     while(index >= 0):
