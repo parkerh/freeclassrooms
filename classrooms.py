@@ -18,16 +18,17 @@ def get_used_rooms(start_time, end_time, day):
 """
     list_of_room_lists = [[[i['meetings'][0]['building_code'],
                             i['meetings'][0]['room_number']]
-                           for i in generator] for generator in
+                           for i in generator if day in
+                               i['meetings'][0]['meeting_days']] for generator in
                            sections_generators]
-    return list_of_room_lists
+    return [item for sublist in list_of_room_lists for item in sublist]
 
 def get_sections_starting_on_day(start_time, end_time, day):
     sections = r.search({
         day_param : day,
         start_param : start_time,
         end_param : end_time,
-        'course_id' : 'phys'
+        #'course_id' : 'math'
         })
     return sections
 
